@@ -22,6 +22,10 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint for monitoring
+  app.get('/api/health', (_req, res) => {
+    res.status(200).json({ status: 'ok', service: 'Swoosh Bots', uptime: process.uptime() });
+  });
   // Session storage for token
   let currentToken: string | null = null;
 
