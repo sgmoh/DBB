@@ -1,4 +1,6 @@
 import { bots, type Bot, type InsertBot } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getBot(id: number): Promise<Bot | undefined>;
@@ -6,32 +8,23 @@ export interface IStorage {
   createBot(bot: InsertBot): Promise<Bot>;
 }
 
-export class MemStorage implements IStorage {
-  private bots: Map<number, Bot>;
-  currentId: number;
-
-  constructor() {
-    this.bots = new Map();
-    this.currentId = 1;
-  }
+export class DatabaseStorage implements IStorage {
+  constructor() {}
 
   async getBot(id: number): Promise<Bot | undefined> {
-    return this.bots.get(id);
+    const result = await this.db.select().from(bots).where(this.eq(bots.id, id));
+    return result.length > 0 ? result[0] : undefined;
   }
 
   async getBotByToken(token: string): Promise<Bot | undefined> {
-    return Array.from(this.bots.values()).find(
-      (bot) => bot.token === token,
-    );
+    const result = await this.db.select().from(bots).where(this.eq(bots.token, token));
+    return result.length > 0 ? result[0] : undefined;
   }
 
   async createBot(insertBot: InsertBot): Promise<Bot> {
-    const id = this.currentId++;
-    const createdAt = new Date().toISOString();
-    const bot: Bot = { ...insertBot, id, createdAt };
-    this.bots.set(id, bot);
-    return bot;
+    const result = await this.db.insert(bots).values(insertBot).returning();
+    return result[0];
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
