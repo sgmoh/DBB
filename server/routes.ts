@@ -5,7 +5,8 @@ import multer from "multer";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
-import { botSchema, insertBotSchema } from "@shared/schema";
+import { botSchema, insertBotSchema, bots } from "@shared/schema";
+import { db } from "./db";
 
 // Set up multer for file uploads
 const upload = multer({
@@ -25,6 +26,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Health check endpoint for monitoring
   app.get('/api/health', (_req, res) => {
     res.status(200).json({ status: 'ok', service: 'Swoosh Bots', uptime: process.uptime() });
+  });
+  
+  // Bot website by name
+  app.get('/:botName', async (req, res, next) => {
+    try {
+      const botName = req.params.botName;
+      if (botName === 'api' || botName === 'uploads') {
+        // Skip to next handler for these special routes
+        return next();
+      }
+      
+      // Find all bots
+      const allBots = await db.select().from(bots);
+      
+      // Find the bot with name matching the URL (case insensitive)
+      const bot = allBots.find(b => b.name.toLowerCase().replace(/\s+/g, '') === botName.toLowerCase());
+      
+      if (!bot) {
+        return next(); // Let the frontend routing handle 404
+      }
+      
+      // Render the bot's website
+      const botData = {
+        id: bot.id,
+        name: bot.name,
+        serverLink: bot.serverLink,
+        logoUrl: bot.logoUrl || '',
+        commands: [
+          { name: '!kick', description: 'Kick a user from the server' },
+          { name: '!ban', description: 'Ban a user from the server' },
+          { name: '!mute', description: 'Mute a user in the server' }
+        ]
+      };
+      
+      // Set a cookie with the bot data
+      res.cookie('bot-data', JSON.stringify(botData), { 
+        maxAge: 900000, // 15 minutes
+        httpOnly: false, // Allow JavaScript to access it
+        path: '/' // Cookie available on all paths
+      });
+      
+      // In development, let the vite middleware handle serving the app with the cookie set
+      return next();
+    } catch (error) {
+      console.error('Error serving bot website:', error);
+      return next();
+    }
   });
   // Session storage for token
   let currentToken: string | null = null;
@@ -144,6 +192,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error("Error getting bot info:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  // Get bot data by name (for website display)
+  app.get("/api/bots/website/:botName", async (req, res) => {
+    try {
+      const botName = req.params.botName;
+      
+      // Find all bots first
+      const allBots = await db.select().from(bots);
+      
+      // Then find the specific bot with matching name
+      console.log('Available bots:', allBots.map(b => ({
+        id: b.id,
+        name: b.name,
+        formattedName: b.name.toLowerCase().replace(/\s+/g, '')
+      })));
+      
+      console.log('Looking for bot name:', botName);
+      
+      const bot = allBots.find(b => 
+        b.name.toLowerCase().replace(/\s+/g, '') === botName.toLowerCase()
+      );
+      
+      if (!bot) {
+        return res.status(404).json({ message: "Bot not found" });
+      }
+      
+      // Return bot data with standard commands
+      const botData = {
+        id: bot.id,
+        name: bot.name,
+        serverLink: bot.serverLink,
+        logoUrl: bot.logoUrl || '',
+        commands: [
+          { name: '!kick', description: 'Kick a user from the server' },
+          { name: '!ban', description: 'Ban a user from the server' },
+          { name: '!mute', description: 'Mute a user in the server' }
+        ]
+      };
+      
+      return res.status(200).json(botData);
+    } catch (error) {
+      console.error("Error getting bot website data:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   });

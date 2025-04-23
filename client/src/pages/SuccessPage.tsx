@@ -6,11 +6,17 @@ import { Button } from "@/components/ui/button";
 const SuccessPage = () => {
   const [copied, setCopied] = useState(false);
   
-  const { data: botData, isLoading } = useQuery({
+  const { data: botData, isLoading } = useQuery<{
+    name: string;
+    serverLink: string;
+    logoUrl: string | null;
+    websiteUrl: string;
+  }>({
     queryKey: ["/api/bots/info"],
     staleTime: Infinity,
   });
 
+  // Default website URL if data is not available
   const websiteUrl = botData?.websiteUrl || "https://dbb-e3j1.onrender.com/yourbot";
   
   const copyWebsiteUrl = () => {
