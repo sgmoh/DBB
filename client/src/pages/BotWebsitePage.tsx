@@ -26,11 +26,14 @@ export default function BotWebsitePage() {
     queryKey: [`/api/bots/website/${botName}`],
     retry: false,
     staleTime: 300000, // 5 minutes
-    // Redirect to home if bot not found
-    onError: () => {
+  });
+  
+  // If there's an error, redirect to not found
+  useEffect(() => {
+    if (isError) {
       setLocation('/not-found');
     }
-  });
+  }, [isError, setLocation]);
   
   const loading = isLoading;
 
