@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { UploadIcon } from "lucide-react";
 
 type FilePreview = {
   name: string;
@@ -104,20 +105,20 @@ const SetupPage = () => {
   };
 
   return (
-    <div className="container mx-auto py-12 px-4">
+    <div className="container mx-auto py-12 px-4 min-h-[calc(100vh-140px)]">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-[#2F3136] rounded-lg shadow-xl p-6 mb-8">
+        <div className="bg-black rounded-lg shadow-2xl p-6 border border-purple-900/30 glow-border">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Bot Configuration</h2>
-            <span className="px-3 py-1 text-xs bg-green-600 text-white rounded-full">Bot Connected</span>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Bot Configuration</h2>
+            <span className="px-3 py-1 text-xs bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-lg">Bot Connected</span>
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div>
                 <Label 
                   htmlFor="bot-name" 
-                  className="block text-sm font-medium text-[#8e9297] mb-2"
+                  className="block text-sm font-medium text-gray-300 mb-2"
                 >
                   Bot Name
                 </Label>
@@ -126,7 +127,7 @@ const SetupPage = () => {
                   id="bot-name" 
                   value={botName}
                   onChange={(e) => setBotName(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#36393F] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5865F2] text-white"
+                  className="w-full px-4 py-3 bg-black border border-purple-900/50 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
                   placeholder="My Awesome Bot" 
                   required
                 />
@@ -134,7 +135,7 @@ const SetupPage = () => {
               <div>
                 <Label 
                   htmlFor="server-link" 
-                  className="block text-sm font-medium text-[#8e9297] mb-2"
+                  className="block text-sm font-medium text-gray-300 mb-2"
                 >
                   Server Invite Link
                 </Label>
@@ -143,19 +144,19 @@ const SetupPage = () => {
                   id="server-link" 
                   value={serverLink}
                   onChange={(e) => setServerLink(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#36393F] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5865F2] text-white"
+                  className="w-full px-4 py-3 bg-black border border-purple-900/50 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
                   placeholder="https://discord.gg/yourserver" 
                   required
                 />
               </div>
             </div>
 
-            <div className="mb-6">
-              <Label className="block text-sm font-medium text-[#8e9297] mb-2">
+            <div className="mb-8">
+              <Label className="block text-sm font-medium text-gray-300 mb-2">
                 Bot Logo
               </Label>
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-[#36393F] rounded-full flex items-center justify-center border-2 border-dashed border-gray-600 overflow-hidden">
+                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center border-2 border-dashed border-purple-900/50 overflow-hidden">
                   {filePreview ? (
                     <img 
                       src={filePreview.url} 
@@ -169,7 +170,7 @@ const SetupPage = () => {
                       viewBox="0 0 24 24" 
                       strokeWidth="1.5" 
                       stroke="currentColor" 
-                      className="w-8 h-8 text-[#8e9297]"
+                      className="w-8 h-8 text-purple-500/50"
                     >
                       <path 
                         strokeLinecap="round" 
@@ -180,21 +181,8 @@ const SetupPage = () => {
                   )}
                 </div>
                 <div className="flex-grow">
-                  <label htmlFor="logo-upload" className="flex items-center px-4 py-2 bg-[#36393F] hover:bg-[#2F3136] border border-gray-700 rounded-md cursor-pointer transition">
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      strokeWidth="1.5" 
-                      stroke="currentColor" 
-                      className="w-5 h-5 mr-2 text-[#8e9297]"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" 
-                      />
-                    </svg>
+                  <label htmlFor="logo-upload" className="flex items-center px-4 py-2 bg-black hover:bg-purple-900/20 border border-purple-900/50 rounded-md cursor-pointer transition">
+                    <UploadIcon className="w-5 h-5 mr-2 text-purple-400" />
                     <span className="text-sm">Choose File</span>
                     <input 
                       id="logo-upload" 
@@ -204,43 +192,38 @@ const SetupPage = () => {
                       onChange={handleFileChange}
                     />
                   </label>
-                  <p className="mt-2 text-xs text-[#8e9297]">
+                  <p className="mt-2 text-xs text-gray-400">
                     Recommended size: 128x128px (Max: 1MB)
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mb-6">
-              <h3 className="text-lg font-medium mb-3">Bot Commands</h3>
-              <div className="bg-[#36393F] rounded-md p-4">
+            <div className="mb-8">
+              <h3 className="text-lg font-medium mb-3 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Bot Commands</h3>
+              <div className="bg-black rounded-md p-4 border border-purple-900/30">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-[#2F3136] p-3 rounded-md border border-gray-700">
+                  <div className="bg-black p-4 rounded-md border border-purple-900/50 shadow-lg hover:border-purple-500/70 transition">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">!kick</span>
-                      <span className="w-4 h-4 bg-green-500 rounded-full"></span>
+                      <span className="font-medium text-purple-300">!kick</span>
+                      <span className="w-4 h-4 bg-green-500 rounded-full glow-purple"></span>
                     </div>
-                    <p className="text-xs text-[#8e9297]">Kick users from your server</p>
+                    <p className="text-xs text-gray-400">Kick users from your server</p>
                   </div>
-                  <div className="bg-[#2F3136] p-3 rounded-md border border-gray-700">
+                  <div className="bg-black p-4 rounded-md border border-purple-900/50 shadow-lg hover:border-purple-500/70 transition">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">!ban</span>
-                      <span className="w-4 h-4 bg-green-500 rounded-full"></span>
+                      <span className="font-medium text-purple-300">!ban</span>
+                      <span className="w-4 h-4 bg-green-500 rounded-full glow-purple"></span>
                     </div>
-                    <p className="text-xs text-[#8e9297]">Ban users from your server</p>
+                    <p className="text-xs text-gray-400">Ban users from your server</p>
                   </div>
-                  <div className="bg-[#2F3136] p-3 rounded-md border border-gray-700">
+                  <div className="bg-black p-4 rounded-md border border-purple-900/50 shadow-lg hover:border-purple-500/70 transition">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">!mute</span>
-                      <span className="w-4 h-4 bg-green-500 rounded-full"></span>
+                      <span className="font-medium text-purple-300">!mute</span>
+                      <span className="w-4 h-4 bg-green-500 rounded-full glow-purple"></span>
                     </div>
-                    <p className="text-xs text-[#8e9297]">Mute users in your server</p>
+                    <p className="text-xs text-gray-400">Mute users in your server</p>
                   </div>
-                </div>
-                <div className="mt-4 text-center">
-                  <button type="button" className="text-sm text-[#5865F2] hover:underline">
-                    + Add Custom Command
-                  </button>
                 </div>
               </div>
             </div>
@@ -248,7 +231,7 @@ const SetupPage = () => {
             <div className="mt-8">
               <Button 
                 type="submit" 
-                className="w-full py-3 bg-gradient-to-r from-[#5865F2] to-purple-600 hover:opacity-90 transition rounded-md font-medium text-white gradient-button"
+                className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 transition rounded-md font-medium text-white gradient-button shadow-lg shadow-purple-500/20"
                 disabled={generateBotMutation.isPending}
               >
                 {generateBotMutation.isPending ? "Generating..." : "Generate Bot & Website"}
