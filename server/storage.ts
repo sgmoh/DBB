@@ -12,17 +12,17 @@ export class DatabaseStorage implements IStorage {
   constructor() {}
 
   async getBot(id: number): Promise<Bot | undefined> {
-    const result = await this.db.select().from(bots).where(this.eq(bots.id, id));
+    const result = await db.select().from(bots).where(eq(bots.id, id));
     return result.length > 0 ? result[0] : undefined;
   }
 
   async getBotByToken(token: string): Promise<Bot | undefined> {
-    const result = await this.db.select().from(bots).where(this.eq(bots.token, token));
+    const result = await db.select().from(bots).where(eq(bots.token, token));
     return result.length > 0 ? result[0] : undefined;
   }
 
   async createBot(insertBot: InsertBot): Promise<Bot> {
-    const result = await this.db.insert(bots).values(insertBot).returning();
+    const result = await db.insert(bots).values(insertBot).returning();
     return result[0];
   }
 }
