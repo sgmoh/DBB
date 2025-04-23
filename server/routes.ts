@@ -98,7 +98,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Generate website URL from bot name
-      const websiteUrl = `https://botforge.io/${result.data.name.toLowerCase().replace(/\s+/g, '')}`;
+      const websiteUrl = `https://dbb-e3j1.onrender.com/${result.data.name.toLowerCase().replace(/\s+/g, '')}`;
 
       // Create bot in storage
       const bot = await storage.createBot({

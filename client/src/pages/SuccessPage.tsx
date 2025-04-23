@@ -11,7 +11,7 @@ const SuccessPage = () => {
     staleTime: Infinity,
   });
 
-  const websiteUrl = botData?.websiteUrl || "https://discord-bot-creator.io/yourbot";
+  const websiteUrl = botData?.websiteUrl || "https://dbb-e3j1.onrender.com/yourbot";
   
   const copyWebsiteUrl = () => {
     navigator.clipboard.writeText(websiteUrl)
