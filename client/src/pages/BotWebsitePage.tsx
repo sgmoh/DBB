@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 
 interface Command {
   name: string;
@@ -17,31 +18,21 @@ interface BotData {
 }
 
 export default function BotWebsitePage() {
-  const [botData, setBotData] = useState<BotData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      // Get the bot data from cookies
-      const getCookieValue = (name: string) => {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-      };
-      
-      const botDataCookie = getCookieValue('bot-data');
-      
-      if (botDataCookie) {
-        const data = JSON.parse(botDataCookie);
-        setBotData(data);
-      } else {
-        console.error("No bot data found");
-      }
-    } catch (error) {
-      console.error("Error parsing bot data:", error);
-    } finally {
-      setLoading(false);
+  const [, setLocation] = useLocation();
+  const botName = window.location.pathname.substring(1); // Remove leading slash
+  
+  // Fetch bot data directly from our API
+  const { data: botData, isLoading, isError } = useQuery<BotData>({
+    queryKey: [`/api/bots/website/${botName}`],
+    retry: false,
+    staleTime: 300000, // 5 minutes
+    // Redirect to home if bot not found
+    onError: () => {
+      setLocation('/not-found');
     }
-  }, []);
+  });
+  
+  const loading = isLoading;
 
   if (loading) {
     return (

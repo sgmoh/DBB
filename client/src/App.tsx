@@ -26,16 +26,14 @@ function Router() {
     const botDataCookie = getCookieValue('bot-data');
     setIsBotWebsite(!!botDataCookie);
     
-    // Check URL path - if it's something other than the main routes, it might be a bot website
+      // Check URL path - if it's something other than the main routes, it might be a bot website
     const path = window.location.pathname;
     const mainRoutes = ['/', '/loading', '/setup', '/success'];
+    
     if (!mainRoutes.includes(path) && path !== '/not-found') {
-      // This might be a bot website URL, check if we need to fetch the data
-      const botNameFromUrl = path.substring(1); // Remove leading slash
-      if (botNameFromUrl && !botDataCookie) {
-        // We'll need to fetch the bot data based on the URL
-        console.log(`Possible bot website URL: ${botNameFromUrl}`);
-      }
+      // This is a bot website URL
+      // Let's skip the cookie check since we'll fetch directly in the BotWebsitePage
+      setIsBotWebsite(true);
     }
   }, []);
   
