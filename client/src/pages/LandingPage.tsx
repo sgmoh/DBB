@@ -59,7 +59,7 @@ const LandingPage = () => {
               </div>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text glow-text">
-              Discord Bot Creator
+              Swoosh Bots
             </h1>
             <p className="text-gray-400 text-lg mb-8">
               Build your own Discord bot with kick, ban, and mute commands
@@ -75,7 +75,7 @@ const LandingPage = () => {
                   </div>
                   <div className="flex items-center justify-between mt-2 text-xs text-gray-400">
                     <span>bot.js</span>
-                    <span>Discord Bot</span>
+                    <span>Swoosh Bot</span>
                   </div>
                   <div className="text-left text-sm mt-2 p-2 bg-black/60 rounded border border-purple-900/30">
                     <div className="font-mono">

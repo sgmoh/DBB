@@ -23,7 +23,7 @@ const BotHeader = () => {
                 <path d="M12 22a8 8 0 100-16 8 8 0 000 16z"></path>
               </svg>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Discord Bots</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Swoosh Bots</span>
           </div>
         </Link>
       </div>

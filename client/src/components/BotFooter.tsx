@@ -5,7 +5,7 @@ const BotFooter = () => {
         <div className="text-center">
           <div className="h-[1px] w-40 mx-auto bg-gradient-to-r from-purple-500/0 via-purple-500 to-purple-500/0 mb-4"></div>
           <p className="text-sm text-gray-400">
-            Discord Bot Generator
+            Swoosh Bots
           </p>
         </div>
       </div>
